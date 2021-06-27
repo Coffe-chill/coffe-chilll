@@ -1,21 +1,12 @@
 <?php 
   session_start();
 ?>
-<?php 
-  if(!isset($_SESSION["quantrivien"])){
-    header("Location:login.php");
-  }
-  // else{
-  //   header("Location:login.php");
-  // }
-
-?>
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Trang Quản trị Website</title>
+  <title>Quản Lí Loại Sản Phẩm</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Font Awesome -->
@@ -39,27 +30,72 @@
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
   <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
-  <script
-  src="https://code.jquery.com/jquery-3.5.1.js"
-  integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
-  crossorigin="anonymous"></script>
+  <script src="./JS/jquery-3.5.1.min.js"></script>
 	<script src="ckeditor/ckeditor.js"> </script>
 	<script src="ckeditor/ckfinder/ckfinder.js"> </script>
   <script src="JS/admin.js"></script>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
-
+<?php include('./JS/jQuery-File-Upload-master/server/php/UploadHandler.php'); ?>
 <?php require("Navbar.php");?>
   <?php require("MenuDanhMuc.php");?>  
-<div class="content-wrapper" style="min-height: 1071.31px;    background-image: url('IMG/2018-03-16-09.05.jpg'); background-size: cover;">
-  
-  
-    <div class="container">
-      <h1 class="text-center" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color: beige;padding-top: 100px; font-size: 50px; font-weight: bold; padding-left: 100px;">Trang Chủ Quản Trị Website</h1>
-    </div>
-  </div>
-  
+<div class="content-wrapper" style="min-height: 1071.31px;    background-color: #fff">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1> Quản Lý Loại Sản Phẩm</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Quản Trị Website</a></li>
+            <li class="breadcrumb-item active"> Quản Lý Loại Sản Phẩm</li>
+          </ol>
+        </div>
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <a href="ThemLoai.php"><button type="button" class="btn btn-info btn-lg">Thêm Mới Loại Sản Phẩm</button></a>
+        <table class="table">
+            <thead class="thead-dark text-center">
+                <tr>
+                    <th>STT</th>
+                    <th>Loại</th>
+                    <th>Thao Tác </th>
+                </tr>
+            </thead>
+            <tbody id="body_table">
+            <?php 
+                require("KetNoiCSDL.php");
+                $SQL = "SELECT * FROM LoaiCoffee";
+                $result = $conn->query($SQL);
+                if ($result->num_rows > 0) {
+                    // output data of each ro
+                    $STT = 1;
+                    while($row = $result->fetch_assoc()) {
+                        ?>
+                    <tr style="height: 80px;">
+                        <td  class="text-center" scope="row"><?=$STT?></td>
+                        <td class="text-center"><?=$row["TenLoaiCoffee"]?></td>
+                        <td  class="text-center"><a href="XoaLoaiSanPham.php?idLoai=<?=$row["idLoai"]?>"><button type="button" class="btn btn-primary btn-lg">Xóa</button></a><a class="NutSua" href="SuaLoaiSP.php?idLoai=<?=$row["idLoai"]?>">  <button type="button" class="btn btn-warning btn-lg">Sửa </button></a></td>
+                    </tr>
+                    <?php
+                    $STT++;
+                    }
+                }
+         ?>
+    
+          
+            </tbody>
+        </table>
+     
+    </section>
+    <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
 <?php require("Footer.php");?>
