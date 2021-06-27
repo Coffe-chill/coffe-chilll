@@ -1,21 +1,12 @@
 <?php 
   session_start();
 ?>
-<?php 
-  if(!isset($_SESSION["quantrivien"])){
-    header("Location:login.php");
-  }
-  // else{
-  //   header("Location:login.php");
-  // }
-
-?>
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Trang Quản trị Website</title>
+  <title>Quản Lí Đặt Bàn online</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Font Awesome -->
@@ -39,27 +30,90 @@
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
   <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
-  <script
-  src="https://code.jquery.com/jquery-3.5.1.js"
-  integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
-  crossorigin="anonymous"></script>
+  <script src="./JS/jquery-3.5.1.min.js"></script>
+  
+  <script src=".JS/jQuery-File-Upload-master/js/vendor/jquery.ui.widget.js"></script>
+  <script src=".JS/jQuery-File-Upload-master/js/jquery.fileupload.js"></script>
 	<script src="ckeditor/ckeditor.js"> </script>
 	<script src="ckeditor/ckfinder/ckfinder.js"> </script>
   <script src="JS/admin.js"></script>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
-
+<?php include('./JS/jQuery-File-Upload-master/server/php/UploadHandler.php'); ?>
 <?php require("Navbar.php");?>
   <?php require("MenuDanhMuc.php");?>  
-<div class="content-wrapper" style="min-height: 1071.31px;    background-image: url('IMG/2018-03-16-09.05.jpg'); background-size: cover;">
-  
-  
-    <div class="container">
-      <h1 class="text-center" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color: beige;padding-top: 100px; font-size: 50px; font-weight: bold; padding-left: 100px;">Trang Chủ Quản Trị Website</h1>
-    </div>
-  </div>
-  
+<div class="content-wrapper" style="min-height: 1071.31px;    background-color: #fff">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1> Quản Lí Đặt Bàn online</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Quản Trị Website</a></li>
+            <li class="breadcrumb-item active"> Quản Lí Đặt Bàn online</li>
+          </ol>
+        </div>
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+
+    <!-- Main content -->
+    <section class="content">
+     
+      <div class="hienthidata">
+      
+        <table class="table">
+            <thead class=" text-center">
+                <tr>
+                    <th>iđ Đặt Bàn</th>
+                    <th>Họ Tên KH</th>
+                    <th>Số điện thoại</th>
+                    <th>Ngày đặt</th>
+                    <th>Khung giờ</th>
+                    <th>Trạng Thái</th>
+                    <th>Cập Nhật Trạng Thái </th>
+                </tr>
+            </thead>
+            <tbody id="body_table">
+            <?php 
+                require("KetNoiCSDL.php");
+                $SQL = "SELECT * FROM DatBan";
+                $result = $conn->query($SQL);
+                if ($result->num_rows > 0) {
+                    // output data of each ro
+                    
+                    while($row = $result->fetch_assoc()) {
+                        ?>
+                    <tr style="height: 80px;">
+                        <td  class="text-center" scope="row"><?=$row["id_DonDatBan"]?></td>
+                        <td class="text-center"><?=$row["HoTen"]?></td>
+                        <td class="text-center"><?=$row["SDT"]?></td>
+                        <td class="text-center"><?=$row["Ngay"]?></td>
+                        <td class="text-center"><?=$row["Gio"]?></td>
+                        <td class="text-center"><?=$row["TrangThai"]?></td>
+                        <td class="text-center"><button type="button" class="btn btn-primary">Đã Hoàn Tất</button></td>
+                    </tr>
+                    <?php
+                    
+                    }
+                }
+         ?>
+    
+          
+            </tbody>
+        </table>
+        <form action="" method="post">
+            <button type="submit" class="btn btn-warning btn-lg">Cập Nhật</button>
+        </form>
+        <!-- /.row (main row) -->
+      </div><!-- /.container-fluid -->
+      
+    </section>
+    <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
 <?php require("Footer.php");?>
